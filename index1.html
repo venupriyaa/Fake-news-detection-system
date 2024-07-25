@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Prediction</title>
+</head>
+<body>
+    <h1>Real-Time Prediction</h1>
+    <form id="predictionForm" action="/predict" method="POST">
+        <label for="textInput">Enter Text:</label><br>
+        <textarea id="textInput" name="text" rows="4" cols="50"></textarea><br>
+        <button type="submit">Predict</button>
+    </form>
+    
+    <div id="predictionResult"></div>
+    
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            var formData = new FormData(this);
+            
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('predictionResult').innerText = 'Prediction: ' + data.prediction;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
